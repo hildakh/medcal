@@ -5,9 +5,9 @@ export enum FrequencyValue {
 }
 
 export const FrequencyLabel: Record<FrequencyValue, string> = {
-  [FrequencyValue.ONCE_DAILY]: "Once Daily",
-  [FrequencyValue.TWICE_DAILY]: "Twice Daily",
-  [FrequencyValue.ONCE_WEEKLY]: "Once Weekly"
+  [FrequencyValue.ONCE_DAILY]: 'Once Daily',
+  [FrequencyValue.TWICE_DAILY]: 'Twice Daily',
+  [FrequencyValue.ONCE_WEEKLY]: 'Once Weekly'
 }
 
 export type Frequency = {

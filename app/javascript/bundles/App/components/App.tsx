@@ -21,8 +21,8 @@ function App() {
           </div>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-6">
+        <div className="grid grid-cols-12 gap-6">
+          <div className="medicatio-selector col-span-12 md:col-span-6">
             <div className="bg-gray-50 p-4 rounded-lg shadow">
               <label className="block text-sm font-medium text-black">
                 Budget ($)
@@ -39,7 +39,11 @@ function App() {
             <MedicationSelector onSelect={handleAddMedication} />
           </div>
 
-          <div>
+          <div className='prescription-summary col-span-12 md:col-span-6'>
+          <div className="bg-gray-50 p-4 rounded-lg shadow">
+            <h3>
+              Prescription Summary
+            </h3>
             {
               selectedMedications.map((med: SelectedMedication) => (
                 <>
@@ -51,6 +55,7 @@ function App() {
                 </>
               ))
             }
+            </div>
           </div>
         </div>
       </div>

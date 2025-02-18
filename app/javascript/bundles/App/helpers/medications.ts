@@ -1,13 +1,13 @@
-import { Frequency, FrequencyLabel, FrequencyValue, type Medication } from "../helpers/types"
+import { FrequencyLabel, FrequencyValue, type Medication } from '../helpers/types'
 
 export const medications: Medication[] = [
   {
     id: 1,
-    name: "Metformin",
+    name: 'Metformin',
     dosages: [
       {
         id: 1,
-        amount: "500 mg",
+        amount: '500 mg',
         frequency: {
           name: FrequencyLabel[FrequencyValue.ONCE_DAILY],
           value: FrequencyValue.ONCE_DAILY
@@ -17,7 +17,7 @@ export const medications: Medication[] = [
       },
       {
         id: 2,
-        amount: "500 mg",
+        amount: '500 mg',
         frequency: {
           name: FrequencyLabel[FrequencyValue.TWICE_DAILY],
           value: FrequencyValue.TWICE_DAILY
@@ -27,7 +27,7 @@ export const medications: Medication[] = [
       },
       {
         id: 3,
-        amount: "1000 mg",
+        amount: '1000 mg',
         frequency: {
           name: FrequencyLabel[FrequencyValue.ONCE_DAILY],
           value: FrequencyValue.ONCE_DAILY
@@ -39,11 +39,11 @@ export const medications: Medication[] = [
   },
   {
     id: 2,
-    name: "Phentermine",
+    name: 'Phentermine',
     dosages: [
       {
         id: 1,
-        amount: "15 mg",
+        amount: '15 mg',
         frequency: {
           name: FrequencyLabel[FrequencyValue.ONCE_DAILY],
           value: FrequencyValue.ONCE_DAILY
@@ -53,7 +53,7 @@ export const medications: Medication[] = [
       },
       {
         id: 2,
-        amount: "30 mg",
+        amount: '30 mg',
         frequency: {
           name: FrequencyLabel[FrequencyValue.ONCE_DAILY],
           value: FrequencyValue.ONCE_DAILY
@@ -63,7 +63,7 @@ export const medications: Medication[] = [
       },
       {
         id: 3,
-        amount: "37.5 mg",
+        amount: '37.5 mg',
         frequency: {
           name: FrequencyLabel[FrequencyValue.ONCE_DAILY],
           value: FrequencyValue.ONCE_DAILY
@@ -75,11 +75,11 @@ export const medications: Medication[] = [
   },
   {
     id: 3,
-    name: "Naltrexone",
+    name: 'Naltrexone',
     dosages: [
       {
         id: 1,
-        amount: "25 mg",
+        amount: '25 mg',
         frequency: {
           name: FrequencyLabel[FrequencyValue.ONCE_DAILY],
           value: FrequencyValue.ONCE_DAILY
@@ -89,7 +89,7 @@ export const medications: Medication[] = [
       },
       {
         id: 2,
-        amount: "50 mg",
+        amount: '50 mg',
         frequency: {
           name: FrequencyLabel[FrequencyValue.ONCE_DAILY],
           value: FrequencyValue.ONCE_DAILY
@@ -99,7 +99,7 @@ export const medications: Medication[] = [
       },
       {
         id: 3,
-        amount: "50 mg",
+        amount: '50 mg',
         frequency: {
           name: FrequencyLabel[FrequencyValue.TWICE_DAILY],
           value: FrequencyValue.TWICE_DAILY
@@ -111,11 +111,11 @@ export const medications: Medication[] = [
   },
   {
     id: 4,
-    name: "Wellbutrin",
+    name: 'Wellbutrin',
     dosages: [
       {
         id: 1,
-        amount: "100 mg",
+        amount: '100 mg',
         frequency: {
           name: FrequencyLabel[FrequencyValue.TWICE_DAILY],
           value: FrequencyValue.TWICE_DAILY
@@ -125,7 +125,7 @@ export const medications: Medication[] = [
       },
       {
         id: 2,
-        amount: "150 mg",
+        amount: '150 mg',
         frequency: {
           name: FrequencyLabel[FrequencyValue.ONCE_DAILY],
           value: FrequencyValue.ONCE_DAILY
@@ -135,7 +135,7 @@ export const medications: Medication[] = [
       },
       {
         id: 3,
-        amount: "150 mg",
+        amount: '150 mg',
         frequency: {
           name: FrequencyLabel[FrequencyValue.TWICE_DAILY],
           value: FrequencyValue.TWICE_DAILY
@@ -147,11 +147,11 @@ export const medications: Medication[] = [
   },
   {
     id: 5,
-    name: "Topiramate",
+    name: 'Topiramate',
     dosages: [
       {
         id: 1,
-        amount: "25 mg",
+        amount: '25 mg',
         frequency: {
           name: FrequencyLabel[FrequencyValue.ONCE_DAILY],
           value: FrequencyValue.ONCE_DAILY
@@ -161,7 +161,7 @@ export const medications: Medication[] = [
       },
       {
         id: 2,
-        amount: "25 mg",
+        amount: '25 mg',
         frequency: {
           name: FrequencyLabel[FrequencyValue.TWICE_DAILY],
           value: FrequencyValue.TWICE_DAILY
@@ -171,7 +171,7 @@ export const medications: Medication[] = [
       },
       {
         id: 3,
-        amount: "50 mg",
+        amount: '50 mg',
         frequency: {
           name: FrequencyLabel[FrequencyValue.TWICE_DAILY],
           value: FrequencyValue.TWICE_DAILY
@@ -183,11 +183,11 @@ export const medications: Medication[] = [
   },
   {
     id: 6,
-    name: "Ozempic",
+    name: 'Ozempic',
     dosages: [
       {
         id: 1,
-        amount: "0.25 mg",
+        amount: '0.25 mg',
         frequency: {
           name: FrequencyLabel[FrequencyValue.ONCE_WEEKLY],
           value: FrequencyValue.ONCE_WEEKLY
@@ -197,7 +197,7 @@ export const medications: Medication[] = [
       },
       {
         id: 2,
-        amount: "0.5 mg",
+        amount: '0.5 mg',
         frequency: {
           name: FrequencyLabel[FrequencyValue.ONCE_WEEKLY],
           value: FrequencyValue.ONCE_WEEKLY
@@ -207,7 +207,7 @@ export const medications: Medication[] = [
       },
       {
         id: 3,
-        amount: "1 mg",
+        amount: '1 mg',
         frequency: {
           name: FrequencyLabel[FrequencyValue.ONCE_WEEKLY],
           value: FrequencyValue.ONCE_WEEKLY
@@ -219,11 +219,11 @@ export const medications: Medication[] = [
   },
   {
     id: 7,
-    name: "Bupropion",
+    name: 'Bupropion',
     dosages: [
       {
         id: 1,
-        amount: "75 mg",
+        amount: '75 mg',
         frequency: {
           name: FrequencyLabel[FrequencyValue.ONCE_DAILY],
           value: FrequencyValue.ONCE_DAILY
@@ -233,7 +233,7 @@ export const medications: Medication[] = [
       },
       {
         id: 2,
-        amount: "150 mg",
+        amount: '150 mg',
         frequency: {
           name: FrequencyLabel[FrequencyValue.ONCE_DAILY],
           value: FrequencyValue.ONCE_DAILY
@@ -243,7 +243,7 @@ export const medications: Medication[] = [
       },
       {
         id: 3,
-        amount: "150 mg",
+        amount: '150 mg',
         frequency: {
           name: FrequencyLabel[FrequencyValue.TWICE_DAILY],
           value: FrequencyValue.TWICE_DAILY
