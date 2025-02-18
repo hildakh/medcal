@@ -1,27 +1,20 @@
 import React, { useState } from 'react';
-// import { MedicationSelector } from './components/MedicationSelector';
-// import { PrescriptionSummary } from './components/PrescriptionSummary';
-// import { SelectedMedication } from './types';
-// import { Pill } from 'lucide-react';
+import { MedicationSelector } from './MedicationSelector/MedicationSelector';
+import { SelectedMedication } from '../helpers/types';
 
 function App() {
-  // const [selectedMedications, setSelectedMedications] = useState<SelectedMedication[]>([]);
+  const [selectedMedications, setSelectedMedications] = useState<SelectedMedication[]>([]);
   const [budget, setBudget] = useState(100);
 
-  // const handleAddMedication = (medication: SelectedMedication) => {
-  //   setSelectedMedications([...selectedMedications, medication]);
-  // };
-
-  // const handleRemoveMedication = (index: number) => {
-  //   setSelectedMedications(selectedMedications.filter((_, i) => i !== index));
-  // };
+  const handleAddMedication = (medication: SelectedMedication) => {
+    setSelectedMedications([...selectedMedications, medication]);
+  };
 
   return (
     <div className="min-h-screen bg-white">
       <div className="container mx-auto px-4 py-8">
         <header className="flex justify-between items-center mb-8">
           <div className="flex items-center space-x-3">
-            {/* <Pill className="w-8 h-8 text-yellow-500" /> */}
             <h1 className="text-2xl font-bold text-black">
               Prescription Cost Calculator
             </h1>
@@ -43,14 +36,22 @@ function App() {
                 step="0.01"
               />
             </div>
-            {/* <MedicationSelector onSelect={handleAddMedication} /> */}
+            <MedicationSelector onSelect={handleAddMedication} />
           </div>
 
-          {/* <PrescriptionSummary
-            medications={selectedMedications}
-            budget={budget}
-            onRemove={handleRemoveMedication}
-          /> */}
+          <div>
+            {
+              selectedMedications.map((med: SelectedMedication) => (
+                <>
+                  <p>
+                    {med.medication.name}
+                  </p>
+                  <p>{med.dosage.amount}</p>
+                  <p>Added</p>
+                </>
+              ))
+            }
+          </div>
         </div>
       </div>
     </div>
