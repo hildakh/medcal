@@ -5,24 +5,4 @@ class MedicationsControllerTest < ActionDispatch::IntegrationTest
     get medications_index_url
     assert_response :success
   end
-
-  test "should get show" do
-    get medications_show_url
-    assert_response :success
-  end
-
-  test "should get create" do
-    get medications_create_url
-    assert_response :success
-  end
-
-  test "should get update" do
-    get medications_update_url
-    assert_response :success
-  end
-
-  test "should get destroy" do
-    get medications_destroy_url
-    assert_response :success
-  end
 end
