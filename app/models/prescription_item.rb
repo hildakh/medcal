@@ -6,13 +6,22 @@ class PrescriptionItem < ApplicationRecord
 
   # Calculate total cost with correct discount logic
   def total_cost(duration = nil)
-    duration ||= custom_duration || medication_dosage.dosage.default_duration  # Default to dosage's default_duration if custom_duration is nil
-    base_cost = medication_dosage.unit_price * duration
-    discount = discount_applicable?(duration) ? 0.9 : 1.0
-    total = base_cost * discount
+    duration ||= custom_duration || medication_dosage.dosage.default_duration
 
-    total
+    frequency_multiplier = case medication_dosage.dosage.frequency.downcase
+    when "once weekly" then 1.0/7
+    when "twice weekly" then 2.0/7
+    when "once daily" then 1
+    when "twice daily" then 2
+    else raise "Unknown frequency: #{medication_dosage.dosage.frequency}"
+    end
+
+    base_cost = medication_dosage.unit_price * duration * frequency_multiplier
+    discount = discount_applicable?(duration) ? 0.9 : 1.0
+
+    base_cost * discount
   end
+
 
   # Check if 10% discount applies (30+ days)
   def discount_applicable?(duration = nil)
