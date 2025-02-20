@@ -10,7 +10,6 @@ class Prescription < ApplicationRecord
 
   before_validation :set_default_budget, on: :create
 
-  # Set default budget if not provided
   def set_default_budget
     self.budget ||= DEFAULT_BUDGET
   end
@@ -25,18 +24,50 @@ class Prescription < ApplicationRecord
     total_cost <= budget
   end
 
-  # Suggest reductions if over budget
+  # Ensure suggested reductions bring the total cost within budget
   def suggested_reductions
-    return {} if valid_within_budget?
+    return [] if valid_within_budget?
 
-    prescription_items.map do |item|
-      new_duration = (item.custom_duration * 0.8).to_i # Suggest 20% reduction
-      {
-        medication: item.medication_dosage.medication.name,
-        original_duration: item.custom_duration,
-        suggested_duration: new_duration,
-        new_cost: item.calculate_cost(new_duration)
-      }
+    remaining_budget = budget
+    new_cost = total_cost
+    suggestions = []
+
+    # Sort items by highest cost first (optimize reduction)
+    sorted_items = prescription_items.sort_by { |item| -item.total_cost }
+
+    sorted_items.each do |item|
+      break if new_cost <= budget
+
+      # Calculate reduced duration (20% reduction per step)
+      reduced_duration = (item.custom_duration * 0.8).to_i
+      reduced_cost = item.calculate_cost(reduced_duration)
+
+      # Apply reduction if it helps bring cost down
+      if new_cost - (item.total_cost - reduced_cost) >= remaining_budget
+        new_cost -= (item.total_cost - reduced_cost)
+        suggestions << {
+          medication: item.medication_dosage.medication.name,
+          original_duration: item.custom_duration,
+          suggested_duration: reduced_duration,
+          original_cost: item.total_cost,
+          new_cost: reduced_cost
+        }
+      end
+    end
+
+    suggestions
+  end
+
+  # Apply suggested reductions
+  def apply_adjustments
+    return if valid_within_budget?
+
+    suggested_reductions.each do |suggestion|
+      item = prescription_items.find_by(
+        medication_dosage: MedicationDosage.joins(:medication)
+                                           .find_by(medications: { name: suggestion[:medication] })
+      )
+      item.update!(custom_duration: suggestion[:suggested_duration])
     end
   end
 end
