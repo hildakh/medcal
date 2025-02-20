@@ -1,8 +1,5 @@
 Rails.application.routes.draw do
-  get "medications/index"
-  get "medications/show"
-  get "medications/create"
-  get "medications/update"
-  get "medications/destroy"
+  resources :medications
+
   root "home#index"
 end
