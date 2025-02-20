@@ -28,46 +28,48 @@ class Prescription < ApplicationRecord
   def suggested_reductions
     return [] if valid_within_budget?
 
-    remaining_budget = budget
     new_cost = total_cost
     suggestions = []
 
-    # Sort items by highest cost first (optimize reduction)
     sorted_items = prescription_items.sort_by { |item| -item.total_cost }
 
     sorted_items.each do |item|
       break if new_cost <= budget
 
-      # Calculate reduced duration (20% reduction per step)
-      reduced_duration = (item.custom_duration * 0.8).to_i
-      reduced_cost = item.calculate_cost(reduced_duration)
+      reduced_duration = item.custom_duration
+      while reduced_duration > 10 && new_cost > budget  # Stop at 10 days minimum
+        reduced_duration = (reduced_duration * 0.8).to_i
+        reduced_cost = item.total_cost(reduced_duration)
 
-      # Apply reduction if it helps bring cost down
-      if new_cost - (item.total_cost - reduced_cost) >= remaining_budget
-        new_cost -= (item.total_cost - reduced_cost)
-        suggestions << {
-          medication: item.medication_dosage.medication.name,
-          original_duration: item.custom_duration,
-          suggested_duration: reduced_duration,
-          original_cost: item.total_cost,
-          new_cost: reduced_cost
-        }
+        if new_cost - (item.total_cost - reduced_cost) >= budget
+          new_cost -= (item.total_cost - reduced_cost)
+          suggestions << {
+            medication: item.medication_dosage.medication.name,
+            original_duration: item.custom_duration,
+            suggested_duration: reduced_duration,
+            original_cost: item.total_cost,
+            new_cost: reduced_cost
+          }
+        end
       end
     end
 
     suggestions
   end
 
-  # Apply suggested reductions
+  # Apply suggested reductions to prescription
   def apply_adjustments
     return if valid_within_budget?
 
-    suggested_reductions.each do |suggestion|
+    suggestions = suggested_reductions
+    return if suggestions.empty?
+
+    suggestions.each do |suggestion|
       item = prescription_items.find_by(
         medication_dosage: MedicationDosage.joins(:medication)
                                            .find_by(medications: { name: suggestion[:medication] })
       )
-      item.update!(custom_duration: suggestion[:suggested_duration])
+      item.update!(custom_duration: suggestion[:suggested_duration]) if item.present?
     end
   end
 end
