@@ -24,34 +24,40 @@ class Prescription < ApplicationRecord
     total_cost <= budget
   end
 
-  # Ensure suggested reductions bring the total cost within budget
+  # Suggest reductions to bring total cost within budget
   def suggested_reductions
     return [] if valid_within_budget?
 
-    new_cost = total_cost
     suggestions = []
+    excess_cost = total_cost - budget
 
-    sorted_items = prescription_items.sort_by { |item| -item.total_cost }
+    prescription_items.each do |item|
+      original_duration = item.custom_duration
+      original_cost = item.total_cost
 
-    sorted_items.each do |item|
-      break if new_cost <= budget
+      # Try reducing duration in steps
+      [ 11, 8, 5 ].each do |reduced_duration|
+        next if reduced_duration >= original_duration
 
-      reduced_duration = item.custom_duration
-      while reduced_duration > 10 && new_cost > budget  # Stop at 10 days minimum
-        reduced_duration = (reduced_duration * 0.8).to_i
-        reduced_cost = item.total_cost(reduced_duration)
+        new_cost = item.total_cost(reduced_duration)
+        savings = original_cost - new_cost
 
-        if new_cost - (item.total_cost - reduced_cost) >= budget
-          new_cost -= (item.total_cost - reduced_cost)
+        if savings > 0
           suggestions << {
             medication: item.medication_dosage.medication.name,
-            original_duration: item.custom_duration,
+            original_duration: original_duration,
             suggested_duration: reduced_duration,
-            original_cost: item.total_cost,
-            new_cost: reduced_cost
+            original_cost: original_cost,
+            new_cost: new_cost,
+            savings: savings
           }
+
+          excess_cost -= savings
+          break if excess_cost <= 0
         end
       end
+
+      break if excess_cost <= 0
     end
 
     suggestions
@@ -62,14 +68,23 @@ class Prescription < ApplicationRecord
     return if valid_within_budget?
 
     suggestions = suggested_reductions
+
     return if suggestions.empty?
 
     suggestions.each do |suggestion|
-      item = prescription_items.find_by(
-        medication_dosage: MedicationDosage.joins(:medication)
-                                           .find_by(medications: { name: suggestion[:medication] })
-      )
-      item.update!(custom_duration: suggestion[:suggested_duration]) if item.present?
+      item = prescription_items.joins(medication_dosage: :medication).find_by(medication_dosages: { medications: { name: suggestion[:medication] } })
+
+      if item.present?
+        item.update!(custom_duration: suggestion[:suggested_duration])
+
+        # Force recalculation of prescription total cost
+        item.reload
+        reload
+
+        break if valid_within_budget?
+      else
+        puts "WARNING: Could not find item for #{suggestion[:medication]}"
+      end
     end
   end
 end

@@ -22,7 +22,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_20_090146) do
   create_table "medication_dosages", force: :cascade do |t|
     t.integer "medication_id", null: false
     t.integer "dosage_id", null: false
-    t.decimal "unit_price"
+    t.decimal "unit_price", precision: 10, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["dosage_id"], name: "index_medication_dosages_on_dosage_id"
