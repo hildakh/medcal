@@ -8,11 +8,22 @@ class MedicationsController < ApplicationController
     render json: {
       id: medication.id,
       name: medication.name,
-      dosages: medication.dosages
+      dosages: medication.medication_dosages.map do |md|
+        {
+          id: md.dosage.id,
+          amount: md.dosage.amount,
+          frequency: md.dosage.frequency,
+          default_duration: md.dosage.default_duration,
+          unit_price: md.unit_price
+        }
+      end
     }
-
   rescue ActiveRecord::RecordNotFound
     render json: { error: "Medication not found" }, status: :not_found
+  end
+
+  def discount_applicable?(duration)
+    duration.to_i >= 30
   end
 
   def create
