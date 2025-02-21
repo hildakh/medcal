@@ -18,15 +18,19 @@ export type Frequency = {
 export type Dosage = {
   id: number;
   amount: string;
-  frequency: Frequency;
-  duration: number;
+  created_at: string;
+  default_duration: number;
+  frequency: string;
   unitPrice: number;
+  updated_at?: string;
 }
 
 export type Medication = {
   id: number;
+  created_at: string;
+  dosages?: Dosage[];
   name: string;
-  dosages: Dosage[];
+  updated_at?: string;
 }
 
 export type SelectedMedication = {

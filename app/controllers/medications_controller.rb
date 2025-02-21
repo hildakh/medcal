@@ -5,7 +5,11 @@ class MedicationsController < ApplicationController
 
   def show
     medication = Medication.find(params[:id])
-    render json: medication
+    render json: {
+      id: medication.id,
+      name: medication.name,
+      dosages: medication.dosages
+    }
 
   rescue ActiveRecord::RecordNotFound
     render json: { error: "Medication not found" }, status: :not_found
