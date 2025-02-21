@@ -10,7 +10,7 @@ interface Props {
   selectedDosage: Dosage | null;
   duration: number;
   onSetDuration: (duration: number) => void;
-  handleAddMedication: () => void
+  handleAddMedication: () => void;
 }
 
 export const MedicationSelector: React.FC<Props> = ({

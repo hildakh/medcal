@@ -1,4 +1,6 @@
 class PrescriptionsController < ApplicationController
+  before_action :set_prescription, only: [ :update ]
+
   def create
     ActiveRecord::Base.transaction do
       @prescription = Prescription.create!(prescription_params)
@@ -17,6 +19,14 @@ class PrescriptionsController < ApplicationController
     end
   rescue ActiveRecord::RecordInvalid => e
     render json: { errors: e.record.errors.full_messages }, status: :unprocessable_entity
+  end
+
+  def update
+    if @prescription.update(budget: params[:budget])
+      render json: { message: "Budget updated successfully", prescription: @prescription }, status: :ok
+    else
+      render json: { errors: @prescription.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   private
@@ -40,5 +50,11 @@ class PrescriptionsController < ApplicationController
         custom_duration: item[:duration] || dosage.default_duration
       )
     end
+  end
+
+  def set_prescription
+    @prescription = Prescription.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    render json: { error: "Prescription not found" }, status: :not_found
   end
 end

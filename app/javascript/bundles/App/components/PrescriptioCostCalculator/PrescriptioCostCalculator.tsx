@@ -12,6 +12,7 @@ const PrescriptioCostCalculator: React.FC = () => {
     items: [],
     id: 0
   });
+
   const [budget, setBudget] = useState(100);
 
   const handleAddPrescriptionItem = (medication: SelectedMedication): void => {
@@ -67,6 +68,31 @@ const PrescriptioCostCalculator: React.FC = () => {
     }
   }
 
+  const updateBudget = async (prescriptionId, newBudget) => {
+    try {
+      const response = await fetch(`/prescriptions/${prescriptionId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': token || ''
+        },
+        body: JSON.stringify({ budget: newBudget }),
+      });
+
+      const data = await response.json();
+
+      console.log('Updated Prescription:', data);
+    } catch (error) {
+      console.error('Error updating budget:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (prescription?.id) {
+      updateBudget(prescription.id, budget);
+    }
+  }, [budget]);
+
   useEffect(() => {
     if (prescriptionItems.length > 0 && !prescription?.id) {
       createPrescription(prescriptionItems[0]);
@@ -96,10 +122,11 @@ const PrescriptioCostCalculator: React.FC = () => {
               <input
                 type="number"
                 value={budget}
-                onChange={(e) => setBudget(Number(e.target.value))}
+                onChange={(e) => setBudget(parseFloat(e.target.value))}
                 className="mt-1 h-10 pl-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
                 min="0"
                 step="0.01"
+                readOnly={!prescription?.id}
               />
             </div>
             <MedicationSelectorContainer
