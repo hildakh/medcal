@@ -4,7 +4,6 @@ class PrescriptionItem < ApplicationRecord
 
   validates :custom_duration, presence: true, numericality: { greater_than: 0 }
 
-  # Calculate total cost with correct discount logic
   def total_cost(duration = nil)
     duration ||= custom_duration || medication_dosage.dosage.default_duration
 
@@ -22,8 +21,6 @@ class PrescriptionItem < ApplicationRecord
     base_cost * discount
   end
 
-
-  # Check if 10% discount applies (30+ days)
   def discount_applicable?(duration = nil)
     duration ||= custom_duration || medication_dosage.dosage.default_duration  # Ensure we always get a duration
 
