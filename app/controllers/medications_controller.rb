@@ -25,16 +25,4 @@ class MedicationsController < ApplicationController
   def discount_applicable?(duration)
     duration.to_i >= 30
   end
-
-  def create
-    # Placeholder in case we decide to give users ability to add a medication
-  end
-
-  def update
-    # Placeholder for updating medication
-  end
-
-  def destroy
-    # Placeholder for deleting medication
-  end
 end
