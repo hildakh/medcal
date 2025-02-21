@@ -2,15 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Prescription, type: :model do
   describe "Validations" do
-    it "is valid with a patient name and budget" do
+    it "is valid with a budget" do
       prescription = build(:prescription)
       expect(prescription).to be_valid
-    end
-
-    it "is invalid without a patient name" do
-      prescription = build(:prescription, patient_name: nil)
-      expect(prescription).not_to be_valid
-      expect(prescription.errors[:patient_name]).to include("can't be blank")
     end
 
     it "is invalid with a budget of 0 or less" do

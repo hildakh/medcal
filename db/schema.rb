@@ -46,7 +46,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_20_090146) do
   end
 
   create_table "prescriptions", force: :cascade do |t|
-    t.string "patient_name"
     t.decimal "budget", precision: 10, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

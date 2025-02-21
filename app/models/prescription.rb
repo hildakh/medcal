@@ -3,7 +3,6 @@ class Prescription < ApplicationRecord
   has_many :medication_dosages, through: :prescription_items
   has_many :medications, through: :medication_dosages
 
-  validates :patient_name, presence: true
   validates :budget, numericality: { greater_than: 0 }
 
   DEFAULT_BUDGET = 100.00

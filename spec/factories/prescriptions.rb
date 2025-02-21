@@ -1,6 +1,5 @@
 FactoryBot.define do
   factory :prescription do
-    patient_name { "John Doe" }
     budget { 100.00 } # Default budget
 
     transient do
