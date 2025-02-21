@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { Medication, Dosage, SelectedMedication } from '../../helpers/types';
-import { medications } from '../../helpers/medications';
+import React from 'react';
+import { Medication, Dosage } from '../../helpers/types';
 
 interface Props {
   medications: Medication[];
@@ -43,40 +42,38 @@ export const MedicationSelector: React.FC<Props> = ({
         </select>
       </div>
 
-      {selectedMed && (
-        <div>
-          <label className="block text-sm font-medium text-black">
-            Select Dosage
-          </label>
-          <select
-            className="mt-1 h-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
-            value={selectedDosage?.id || ''}
-            onChange={(e) => onSelectDosage(parseInt(e.target.value))}
-          >
-            <option value="">Select a dosage...</option>
-            {dosages.map(dosage => (
-              <option key={dosage.id} value={dosage.id}>
-                {dosage.amount} - {dosage.frequency}
-              </option>
-            ))}
-          </select>
-        </div>
-      )}
+      <div>
+        <label className="block text-sm font-medium text-black">
+          Select Dosage
+        </label>
+        <select
+          className="mt-1 h-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
+          value={selectedDosage?.id || ''}
+          onChange={(e) => onSelectDosage(parseInt(e.target.value))}
+        >
+          <option value="">Select a dosage...</option>
+          {dosages?.map(dosage => (
+            <option key={dosage.id} value={dosage.id}>
+              {dosage.amount} - {dosage.frequency}
+            </option>
+          ))}
+        </select>
+      </div>
 
-      {selectedDosage && (
-        <div>
-          <label className="block text-sm font-medium text-black">
-            Duration (days)
-          </label>
-          <input
-            type="number"
-            min="1"
-            value={duration}
-            onChange={(e) => onSetDuration(parseInt(e.target.value))}
-            className="mt-1 h-10 pl-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
-          />
-        </div>
-      )}
+      <div>
+        <label className="block text-sm font-medium text-black">
+          Duration (days)
+        </label>
+        <input
+          type="number"
+          min="1"
+          value={duration}
+          onChange={(e) => onSetDuration(parseInt(e.target.value))}
+          className="mt-1 h-10 pl-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
+        />
+        <h4 className='pt-4'>Unit price: {selectedDosage?.unit_price || 0}</h4>
+      </div>
+
 
       <button
         onClick={handleAddMedication}

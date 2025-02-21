@@ -3,7 +3,7 @@ import { MedicationSelector } from '../MedicationSelector/MedicationSelector';
 import { Dosage, Medication, SelectedMedication } from '../../helpers/types';
 
 interface Props {
-  handleAddPrescriptionItem: (medication: SelectedMedication) => void
+  handleAddPrescriptionItem: (medication: SelectedMedication) => void;
 }
 
 export const MedicationSelectorContainer: React.FC<Props> = ({
@@ -27,8 +27,6 @@ export const MedicationSelectorContainer: React.FC<Props> = ({
     }
 
     const fetchMedication = async () => {
-      console.log(selectedMed?.id)
-
       if (!selectedMed) return;
 
       try {
@@ -70,7 +68,15 @@ export const MedicationSelectorContainer: React.FC<Props> = ({
     }
 
     handleAddPrescriptionItem(prescriptionItem);
+
+    resetValues();
   };
+
+  const resetValues = () => {
+    setSelectedMed(null);
+    setDosages([]);
+    setDuration(0);
+  }
 
   return (
     <MedicationSelector

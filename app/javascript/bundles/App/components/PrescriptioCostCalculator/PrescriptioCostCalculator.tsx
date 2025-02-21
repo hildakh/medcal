@@ -1,18 +1,80 @@
-import React, { use, useEffect, useState } from 'react';
-import { SelectedMedication } from '../../helpers/types';
+import React, { useEffect, useState } from 'react';
+import { Prescription, SelectedMedication } from '../../helpers/types';
 import { MedicationSelectorContainer } from '../MedicationSelectorContainer/MedicationSelectorContainer';
+
+const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
 const PrescriptioCostCalculator: React.FC = () => {
   const [prescriptionItems, setPrescriptionItems] = useState<SelectedMedication[]>([]);
+  const [prescription, setPrescription] = useState<Prescription>({
+    total_cost: 0,
+    budget: 0,
+    items: [],
+    id: 0
+  });
   const [budget, setBudget] = useState(100);
 
   const handleAddPrescriptionItem = (medication: SelectedMedication): void => {
     setPrescriptionItems([...prescriptionItems, medication]);
   };
 
+  const addPrescriptionItem = async (medication: SelectedMedication) => {
+    if (prescription?.id) {
+      try {
+        const response = await fetch(`/prescriptions/${prescription.id}/prescription_items`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': token || ''
+          },
+          body: JSON.stringify(medication),
+        })
+
+        const data = await response.json();
+
+        setPrescription((prevPrescription) => ({
+          ...prevPrescription,
+          id: data.id,
+          total_cost: data.total_cost,
+          items: [ ...prevPrescription?.items || [], data.item],
+          budget: data.budget
+        }))
+      } catch (error) {
+        console.error('Error adding items:', error);
+      }
+    }
+  }
+
+  const createPrescription = async (medication: SelectedMedication) => {
+    try {
+      const response = await fetch(`/prescriptions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': token || ''
+        },
+        body: JSON.stringify({
+          budget,
+          items: [medication],
+        }),
+      })
+
+      const data = await response.json();
+
+      setPrescription(data);
+    } catch (error) {
+      console.error('Error creating prescription:', error);
+    }
+  }
+
   useEffect(() => {
-    console.log('items', prescriptionItems);
+    if (prescriptionItems.length > 0 && !prescription?.id) {
+      createPrescription(prescriptionItems[0]);
+    } else if (prescriptionItems.length > 0) {
+      addPrescriptionItem(prescriptionItems[prescriptionItems.length - 1]);
+    }
   }, [prescriptionItems]);
+
 
   return (
     <div className="min-h-screen bg-white">
@@ -51,18 +113,27 @@ const PrescriptioCostCalculator: React.FC = () => {
               Prescription Summary
             </h3>
             {
-              prescriptionItems.map((med: SelectedMedication) => (
-                <>
-                  <p>
-                    {med.medication.name}
-                  </p>
-                  <p>{med.dosage.amount}</p>
-                  <p>Added</p>
-                </>
+              prescriptionItems.map((med: SelectedMedication, index) => (
+                <div key={med.medication.id+med.dosage.id+index}>
+                  <h4 className='border-b py-4'>
+                    {med.medication.name} - {med.dosage.amount} - {med.dosage.frequency} - {med.duration} days
+                  </h4>
+                </div>
               ))
             }
             </div>
+            <h3 className='py-4'>Total: ${prescription?.total_cost}</h3>
+
+            <button
+              type="submit"
+              className="w-full px-4 py-2 bg-yellow-400 text-black rounded-md hover:bg-yellow-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              disabled={prescription?.total_cost > budget || prescriptionItems.length === 0}
+
+            >
+              Confirm prescription
+            </button>
           </div>
+
         </div>
       </div>
     </div>

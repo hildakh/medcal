@@ -18,11 +18,9 @@ export type Frequency = {
 export type Dosage = {
   id: number;
   amount: string;
-  created_at: string;
   default_duration: number;
   frequency: string;
-  unitPrice: number;
-  updated_at?: string;
+  unit_price: number;
 }
 
 export type Medication = {
@@ -37,4 +35,11 @@ export type SelectedMedication = {
   medication: Medication;
   dosage: Dosage;
   duration: number;
+}
+
+export type Prescription = {
+  id: number;
+  items: SelectedMedication[],
+  total_cost: number;
+  budget: number;
 }
