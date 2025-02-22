@@ -36,9 +36,9 @@ const PrescriptioCostCalculator: React.FC = () => {
         setPrescription((prevPrescription) => ({
           ...prevPrescription,
           id: data.id,
-          total_cost: data.total_cost,
+          total_cost: data.prescription.total_cost,
           items: [ ...prevPrescription?.items || [], data.item],
-          budget: data.budget
+          budget: data.prescription.budget,
         }))
       } catch (error) {
         console.error('Error adding items:', error);
@@ -81,7 +81,7 @@ const PrescriptioCostCalculator: React.FC = () => {
 
       const data = await response.json();
 
-      console.log('Updated Prescription:', data);
+      setBudget(data.prescription.budget)
     } catch (error) {
       console.error('Error updating budget:', error);
     }
@@ -155,7 +155,6 @@ const PrescriptioCostCalculator: React.FC = () => {
               type="submit"
               className="w-full px-4 py-2 bg-yellow-400 text-black rounded-md hover:bg-yellow-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               disabled={prescription?.total_cost > budget || prescriptionItems.length === 0}
-
             >
               Confirm prescription
             </button>

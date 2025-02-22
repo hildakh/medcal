@@ -72,10 +72,8 @@ bundle exec rubocop --auto-correct
 ---
 
 ## Next steps
-  - 🪲 Bug fixes
-    - Fix total prescription cost logic to not reset after adding new items
   - 🧪 Add specs for controllers & react components
   - 🤖 Feature update
-    - Add implement cost modification logic in frontend
+    - Implement cost modification logic in frontend to suggest shorter duration
     - Add confetti / confirmation when prescription is submitted
 

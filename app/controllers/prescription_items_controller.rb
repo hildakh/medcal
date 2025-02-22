@@ -17,9 +17,12 @@ class PrescriptionItemsController < ApplicationController
       )
 
       render json: {
-        prescription_item: @prescription_item,
+        item: @prescription_item,
         id: @prescription.id,
-        budget: @prescription.budget
+        prescription: {
+          budget: @prescription.budget,
+          total_cost: @prescription.total_cost
+        }
       }, status: :created
     end
   rescue ActiveRecord::RecordInvalid => e
