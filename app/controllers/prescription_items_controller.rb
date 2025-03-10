@@ -28,4 +28,18 @@ class PrescriptionItemsController < ApplicationController
   rescue ActiveRecord::RecordInvalid => e
     render json: { errors: e.record.errors.full_messages }, status: :unprocessable_entity
   end
+
+  def calculate
+    medication_dosage = MedicationDosage.find_by(
+      medication_id: params[:medication_id],
+      dosage_id: params[:dosage_id]
+    )
+
+    cost = PrescriptionItem.new(
+      medication_dosage: medication_dosage,
+      custom_duration: params[:duration]
+    ).total_cost
+
+    render json: { total_cost: cost }
+  end
 end

@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
   resources :medications
   resources :prescriptions do
-     resources :prescription_items
+    resources :prescription_items
   end
 
-  resources :medications do
-    get :calculate_cost, on: :collection
+  resources :prescription_items do
+    collection do
+      get :calculate
+    end
   end
 
   root "home#index"

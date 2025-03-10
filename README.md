@@ -42,7 +42,7 @@ foreman start web
 ## 🛠 API Endpoints
 ### Prescriptions
 - `POST /prescriptions` – Create a prescription
-- `PATCH /prescriptions/:id` – Update budget
+- `PUT /prescriptions/:id` – Update budget
 - `GET /prescriptions/:id` – Retrieve prescription details.
 
 ### Prescription Items
