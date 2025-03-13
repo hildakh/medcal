@@ -62,7 +62,7 @@ group :development, :test do
   gem "rspec-rails"
 end
 
-gem "shakapacker", "= 8.1"
+gem "shakapacker", "8.2.0"
 
 gem "react_on_rails", "= 14.1.1"
 
