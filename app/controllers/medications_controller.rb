@@ -21,8 +21,4 @@ class MedicationsController < ApplicationController
   rescue ActiveRecord::RecordNotFound
     render json: { error: "Medication not found" }, status: :not_found
   end
-
-  def discount_applicable?(duration)
-    duration.to_i >= 30
-  end
 end

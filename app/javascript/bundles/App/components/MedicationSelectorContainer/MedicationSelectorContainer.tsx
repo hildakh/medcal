@@ -1,94 +1,53 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo } from 'react';
 import { MedicationSelector } from '../MedicationSelector/MedicationSelector';
-import { Dosage, Medication, SelectedMedication } from '../../helpers/types';
+import { SelectedMedication } from '../../helpers/types';
+import DosageSelector from '../MedicationSelector/DosageSelector';
+import DurationSelector from '../MedicationSelector/DurationSelector';
+import AddMedicationButton from '../MedicationSelector/AddMedicationButton';
+import { useMedication } from '../../hooks/useMedication';
 
 interface Props {
   handleAddPrescriptionItem: (medication: SelectedMedication) => void;
 }
 
-export const MedicationSelectorContainer: React.FC<Props> = ({
+export const MedicationSelectorContainer: React.FC<Props> = memo(({
   handleAddPrescriptionItem,
 }) => {
-    const [medications, setMedications] = useState<Medication[]>([]);
-    const [selectedMed, setSelectedMed] = useState<Medication | null>(null);
-    const [dosages, setDosages] = useState<Dosage[]>([]);
-    const [selectedDosage, setSelectedDosage] = useState<Dosage | null>(null);
-    const [duration, setDuration] = useState<number>(0);
-
-    const fetchMedications = async () => {
-     try {
-       const response = await fetch('/medications.json');
-       const data = await response.json();
-
-       setMedications(data);
-     } catch (error) {
-       console.error('Error fetching medications:', error);
-     }
-    }
-
-    const fetchMedication = async () => {
-      if (!selectedMed) return;
-
-      try {
-        const response = await fetch(`/medications/${selectedMed.id}`);
-        const data = await response.json();
-
-        setDosages(data.dosages);
-
-      } catch (error) {
-        console.error('Error fetching dosages:', error);
-      }
-    }
-
-    useEffect(() => {
-      fetchMedications();
-      fetchMedication();
-    }, [selectedMed])
-
-  const handleSelectMed = (id: number) => {
-    const selectedMed = medications.find(med => med.id === id)!;
-
-    setSelectedMed(selectedMed);
-  };
-
-  const handleSelectDosage = (id: number) => {
-    const selectedDosage = dosages.find(dos => dos.id === id)!;
-
-    setSelectedDosage(selectedDosage);
-    setDuration(selectedDosage.default_duration);
-  }
-
-  const handleAddMedication = () => {
-    if (!selectedMed || !selectedDosage) return;
-
-    const prescriptionItem: SelectedMedication = {
-      medication: selectedMed,
-      dosage: selectedDosage,
-      duration
-    }
-
-    handleAddPrescriptionItem(prescriptionItem);
-
-    resetValues();
-  };
-
-  const resetValues = () => {
-    setSelectedMed(null);
-    setDosages([]);
-    setDuration(0);
-  }
+  const {
+    medications,
+    handleSelectMed,
+    selectedMed,
+    dosages,
+    handleSelectDosage,
+    selectedDosage,
+    duration,
+    setDuration,
+    handleAddMedication,
+  } = useMedication(
+    handleAddPrescriptionItem
+  );
 
   return (
-    <MedicationSelector
-      medications={medications}
-      selectedMed={selectedMed}
-      onSelectMed={handleSelectMed}
-      dosages={dosages}
-      onSelectDosage={handleSelectDosage}
-      selectedDosage={selectedDosage}
-      duration={duration}
-      onSetDuration={setDuration}
-      handleAddMedication={handleAddMedication}
-    />
+    <div className="space-y-4 p-4 bg-gray-50 rounded-lg shadow">
+      <MedicationSelector
+        medications={medications}
+        onSelectMed={handleSelectMed}
+        selectedMed={selectedMed}
+      />
+      <DosageSelector
+        dosages={dosages}
+        onSelectDosage={handleSelectDosage}
+        selectedDosage={selectedDosage}
+      />
+      <DurationSelector
+        duration={duration}
+        onSetDuration={setDuration}
+        selectedDosage={selectedDosage}
+      />
+      <AddMedicationButton
+        handleAddMedication={handleAddMedication}
+        isDisabled={!selectedDosage || !selectedMed}
+      />
+    </div>
   )
-};
+});
