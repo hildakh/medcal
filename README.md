@@ -1,6 +1,6 @@
-# Measured
+# MedCal
 
-Measured is a **prescription cost calculator** that allows users to create prescriptions, add medication items, and calculate the total cost dynamically build on Rails and React. This project uses [React on Rails template](https://github.com/shakacode/react_on_rails) from [Shakacode](https://github.com/shakacode)
+Med Cal is a **prescription cost calculator** that allows users to create prescriptions, add medication items, and calculate the total cost dynamically build on Rails and React. This project uses [React on Rails template](https://github.com/shakacode/react_on_rails) from [Shakacode](https://github.com/shakacode)
 
 ## 🚀 Features
 - Create prescriptions with a set budget.
@@ -13,8 +13,8 @@ Measured is a **prescription cost calculator** that allows users to create presc
 ## 📦 Installation & Setup
 ### Clone the Repository
 ```sh
- git clone https://github.com/hildakh/measured.git
- cd measured
+ git clone https://github.com/hildakh/medcal.git
+ cd medcal
 ```
 
 ### Install Dependencies
@@ -42,7 +42,7 @@ foreman start web
 ## 🛠 API Endpoints
 ### Prescriptions
 - `POST /prescriptions` – Create a prescription
-- `PATCH /prescriptions/:id` – Update budget
+- `PUT /prescriptions/:id` – Update budget
 - `GET /prescriptions/:id` – Retrieve prescription details.
 
 ### Prescription Items
