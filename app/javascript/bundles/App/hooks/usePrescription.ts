@@ -44,6 +44,7 @@ export const usePrescription = () => {
 
       if (data.prescription.id) {
         setStatusMessage('Prescription successfully created');
+        resetPrescription();
       } else {
         setStatusMessage('Something went wrong');
       }
@@ -51,6 +52,13 @@ export const usePrescription = () => {
       console.error('Error creating prescription:', error);
     }
   }
+
+  const resetPrescription = () => {
+    setPrescriptionItems([]);
+    setBudget(100);
+    setTotalCost(0);
+    setStatusMessage('');
+  };
 
   const handleAddPrescriptionItem = async (medication: SelectedMedication): Promise<void> => {
     setPrescriptionItems([...prescriptionItems, medication]);

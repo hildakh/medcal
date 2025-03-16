@@ -13,6 +13,8 @@ const PrescriptioCostCalculator: React.FC = () => {
     totalCost,
   } = usePrescription();
 
+  // TODO -- add UI for displaying success and error status
+
   return (
     <div className="min-h-screen bg-white">
       <div className="container mx-auto px-4 py-8">
